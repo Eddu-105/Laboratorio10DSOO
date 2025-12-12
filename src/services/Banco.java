@@ -515,4 +515,194 @@ public class Banco {
             System.out.println("Error vinculando titulares: " + e.getMessage());
         }
     }
+    
+    public boolean crearCuentaParaCliente(
+                                    String idCuenta,
+                                    String tipo,
+                                    double saldoInicial,
+                                    String idCliente) {
+
+        String sqlCuenta =
+            "INSERT INTO cuentas (id_cuenta, tipo, saldo) VALUES (?, ?, ?)";
+        String sqlRelacion =
+            "INSERT INTO cliente_cuenta (id_cliente, id_cuenta) VALUES (?, ?)";
+
+        try (Connection cn = Conexion.getConexion()) {
+            cn.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = cn.prepareStatement(sqlCuenta);
+                 PreparedStatement ps2 = cn.prepareStatement(sqlRelacion)) {
+
+                ps1.setString(1, idCuenta);
+                ps1.setString(2, tipo);
+                ps1.setDouble(3, saldoInicial);
+                ps1.executeUpdate();
+
+                ps2.setString(1, idCliente);
+                ps2.setString(2, idCuenta);
+                ps2.executeUpdate();
+
+                cn.commit();
+                return true;
+
+            } catch (SQLException e) {
+                cn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean depositar(
+        String idCuenta,
+        double monto,
+        String idEmpleado,
+        String idCliente) {
+
+        String sqlUpdate =
+            "UPDATE cuentas SET saldo = saldo + ? WHERE id_cuenta = ?";
+        String sqlTx =
+            "INSERT INTO transacciones " +
+            "(tipo, fecha_hora, monto, cuenta_destino, id_empleado, id_cliente) " +
+            "VALUES (?, NOW(), ?, ?, ?, ?)";
+
+        try (Connection cn = Conexion.getConexion()) {
+            cn.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = cn.prepareStatement(sqlUpdate);
+                 PreparedStatement ps2 = cn.prepareStatement(sqlTx)) {
+
+                ps1.setDouble(1, monto);
+                ps1.setString(2, idCuenta);
+                ps1.executeUpdate();
+
+                ps2.setString(1, "DEPOSITO");
+                ps2.setDouble(2, monto);
+                ps2.setString(3, idCuenta);
+                ps2.setString(4, idEmpleado);
+                ps2.setString(5, idCliente);
+                ps2.executeUpdate();
+
+                cn.commit();
+                return true;
+
+            } catch (SQLException e) {
+                cn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean retirar(
+            String idCuenta,
+            double monto,
+            String idEmpleado,
+            String idCliente) {
+
+        String sqlUpdate =
+            "UPDATE cuentas SET saldo = saldo - ? " +
+            "WHERE id_cuenta = ? AND saldo >= ?";
+        String sqlTx =
+            "INSERT INTO transacciones " +
+            "(tipo, fecha_hora, monto, cuenta_origen, id_empleado, id_cliente) " +
+            "VALUES (?, NOW(), ?, ?, ?, ?)";
+
+        try (Connection cn = Conexion.getConexion()) {
+            cn.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = cn.prepareStatement(sqlUpdate);
+                 PreparedStatement ps2 = cn.prepareStatement(sqlTx)) {
+
+                ps1.setDouble(1, monto);
+                ps1.setString(2, idCuenta);
+                ps1.setDouble(3, monto);
+
+                int filas = ps1.executeUpdate();
+                if (filas == 0) {
+                    cn.rollback(); // saldo insuficiente
+                    return false;
+                }
+
+                ps2.setString(1, "RETIRO");
+                ps2.setDouble(2, monto);
+                ps2.setString(3, idCuenta);
+                ps2.setString(4, idEmpleado);
+                ps2.setString(5, idCliente);
+                ps2.executeUpdate();
+
+                cn.commit();
+                return true;
+
+            } catch (SQLException e) {
+                cn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean transferir(
+            String cuentaOrigen,
+            String cuentaDestino,
+            double monto,
+            String idEmpleado,
+            String idCliente) {
+
+        String sqlDebito =
+            "UPDATE cuentas SET saldo = saldo - ? " +
+            "WHERE id_cuenta = ? AND saldo >= ?";
+        String sqlCredito =
+            "UPDATE cuentas SET saldo = saldo + ? WHERE id_cuenta = ?";
+        String sqlTx =
+            "INSERT INTO transacciones " +
+            "(tipo, fecha_hora, monto, cuenta_origen, cuenta_destino, id_empleado, id_cliente) " +
+            "VALUES (?, NOW(), ?, ?, ?, ?, ?)";
+
+        try (Connection cn = Conexion.getConexion()) {
+            cn.setAutoCommit(false);
+
+            try (PreparedStatement psDeb = cn.prepareStatement(sqlDebito);
+                 PreparedStatement psCre = cn.prepareStatement(sqlCredito);
+                 PreparedStatement psTx  = cn.prepareStatement(sqlTx)) {
+
+                psDeb.setDouble(1, monto);
+                psDeb.setString(2, cuentaOrigen);
+                psDeb.setDouble(3, monto);
+
+                if (psDeb.executeUpdate() == 0) {
+                    cn.rollback(); // saldo insuficiente
+                    return false;
+                }
+
+                psCre.setDouble(1, monto);
+                psCre.setString(2, cuentaDestino);
+                psCre.executeUpdate();
+
+                psTx.setString(1, "TRANSFERENCIA");
+                psTx.setDouble(2, monto);
+                psTx.setString(3, cuentaOrigen);
+                psTx.setString(4, cuentaDestino);
+                psTx.setString(5, idEmpleado);
+                psTx.setString(6, idCliente);
+                psTx.executeUpdate();
+
+                cn.commit();
+                return true;
+
+            } catch (SQLException e) {
+                cn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
