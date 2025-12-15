@@ -289,6 +289,7 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
         }
 
         String direccion = "-"; 
+        String usuarioAs = null;
 
         Empleado nuevo = new Empleado(
                 dni,
@@ -297,7 +298,8 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
                 telefono,
                 correo,
                 idEmpleado,
-                cargo
+                cargo,
+                usuarioAs
         );
 
         banco.agregarEmpleado(nuevo);

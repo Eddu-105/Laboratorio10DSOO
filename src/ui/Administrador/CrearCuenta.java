@@ -215,10 +215,13 @@ public class CrearCuenta extends javax.swing.JPanel {
             return;
         }
 
-        if (!numeroCuenta.matches("\\d{10,20}")) {
-            JOptionPane.showMessageDialog(this, "El número de cuenta debe tener entre 10 y 20 dígitos.");
-            return;
-        }
+        if (!numeroCuenta.matches("\\d{10,20}") || numeroCuenta.matches("0+")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "El número de cuenta debe tener entre 10 y 20 dígitos y no puede ser solo ceros."
+            );
+        return;
+}
 
         if (!tipo.equals("AHORRO") && !tipo.equals("CTE")) {
             JOptionPane.showMessageDialog(this, "El tipo de cuenta debe ser AHORRO o CTE.");

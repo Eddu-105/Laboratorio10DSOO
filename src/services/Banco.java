@@ -15,6 +15,7 @@ import com.mycompany.laboratorio9.models.UsuarioAdministrador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Banco {
     public Banco() {
         cargarDatosDesdeBD();
         cargarClientesDesdeBD();
+        cargarEmpleadosDesdeBD();
         cargarCuentasDesdeBD();
     }
 
@@ -703,6 +705,53 @@ public class Banco {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public void cargarEmpleadosDesdeBD() {
+        listaEmpleados.clear();
+
+        String sql = """
+            SELECT id_empleado, dni, nombre, direccion, telefono, email, cargo, usuario_asociado
+            FROM empleados
+        """;
+
+        try (Connection cn = Conexion.getConexion();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (cn == null) {
+                System.out.println("No hay conexión a la BD (Conexion.getConexion() devolvió null).");
+                return;
+            }
+
+            while (rs.next()) {
+                String idEmpleado = rs.getString("id_empleado");
+                String dni       = rs.getString("dni");
+                String nombre    = rs.getString("nombre");
+                String direccion = rs.getString("direccion");
+                String telefono  = rs.getString("telefono");
+                String email     = rs.getString("email");
+                String cargo     = rs.getString("cargo");
+                String usuarioAs = rs.getString("usuario_asociado");
+
+                Empleado emp = new Empleado();
+                emp.setIdEmpleado(idEmpleado);
+                emp.setDni(dni);
+                emp.setNombre(nombre);
+                emp.setDireccion(direccion);
+                emp.setTelefono(telefono);
+                emp.setEmail(email);
+                emp.setCargo(cargo);
+                emp.setUsuarioAsociado(usuarioAs);
+
+                listaEmpleados.add(emp);
+            }
+
+            System.out.println("Empleados cargados desde BD: " + listaEmpleados.size());
+
+        } catch (SQLException e) {
+            System.out.println("Error al cargar empleados desde BD: " + e.getMessage());
         }
     }
 }

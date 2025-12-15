@@ -3,10 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10-YO/Laboratorio10DSOO/src/ui/Administrador/CrearCuenta.java</file>
-            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10-YO/Laboratorio10DSOO/src/ui/Administrador/EliminarCuenta.java</file>
-            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10-YO/Laboratorio10DSOO/src/services/Banco.java</file>
-            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10-YO/Laboratorio10DSOO/src/services/Conexion.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/services/Banco.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Empleado.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/ui/Administrador/RegistrarEmpleado.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/services/Conexion.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Cliente.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Cuenta.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Deposito.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Persona.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Retiro.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Transaccion.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Transferencia.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/Usuario.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/UsuarioAdministrador.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/UsuarioCliente.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/models/UsuarioEmpleado.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/ui/Administrador/CrearCuenta.java</file>
+            <file>file:/D:/UNSA%202025/II%20SEMESTRE/DSOO/Laboratorio10/Laboratorio10DSOO/src/ui/Administrador/RegistrarCliente.java</file>
         </group>
     </open-files>
 </project-private>
